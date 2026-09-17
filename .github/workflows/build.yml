@@ -24,20 +24,53 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: 📱 Setup Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: 📦 Install Project Dependencies
         run: npm install
 
       - name: 🚀 Prebuild Native Android Project
         run: npx --yes expo prebuild --platform android --clean
 
-      - name: 🔑 Setup Keystore
+      - name: 🔑 Setup Keystore & Configure Gradle Signing
         run: |
           if [ -f "zeeu-keystore.jks" ]; then
             cp zeeu-keystore.jks android/app/
           fi
+          python3 -c "
+          import re
+
+          with open('android/app/build.gradle', 'r') as f:
+              content = f.read()
+
+          if 'release {' not in content or 'signingConfig signingConfigs.release' not in content:
+              release_signing_block = '''
+                  release {
+                      if (file('zeeu-keystore.jks').exists()) {
+                          storeFile file('zeeu-keystore.jks')
+                          storePassword 'Zeeu@12345'
+                          keyAlias 'zeeu'
+                          keyPassword 'Zeeu@12345'
+                      } else {
+                          signingConfig signingConfigs.debug
+                      }
+                  }
+          '''
+              content = re.sub(
+                  r'(signingConfigs\s*\{[\s\S]*?debug\s*\{[\s\S]*?\}\s*)',
+                  r'\1' + release_signing_block,
+                  content,
+                  count=1
+              )
+
+              content = re.sub(
+                  r'(buildTypes\s*\{[\s\S]*?release\s*\{[\s\S]*?signingConfig\s+)signingConfigs\.debug',
+                  r'\1signingConfigs.release',
+                  content,
+                  count=1
+              )
+
+          with open('android/app/build.gradle', 'w') as f:
+              f.write(content)
+          "
 
       - name: 🔨 Compile Release APK with Gradle
         working-directory: android

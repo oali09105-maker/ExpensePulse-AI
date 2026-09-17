@@ -13,7 +13,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#0B1F17"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.zeeucreativestudio.expensepulseai",
@@ -22,7 +24,9 @@
       "infoPlist": {
         "GADApplicationIdentifier": "ca-app-pub-5206710479803910~5151606476",
         "SKAdNetworkItems": [
-          { "SKAdNetworkIdentifier": "cstr6suwn9.skadnetwork" }
+          {
+            "SKAdNetworkIdentifier": "cstr6suwn9.skadnetwork"
+          }
         ]
       }
     },
@@ -33,7 +37,10 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#0B1F17"
       },
-      "permissions": ["INTERNET", "ACCESS_NETWORK_STATE"]
+      "permissions": [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE"
+      ]
     },
     "web": {
       "favicon": "./assets/icon.png"
@@ -53,9 +60,7 @@
           "userTrackingUsageDescription": "This identifier will be used to deliver personalized ads to you."
         }
       ],
-      [
-        "expo-print"
-      ]
+      "expo-font"
     ]
   }
 }
