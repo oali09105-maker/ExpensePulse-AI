@@ -1,0 +1,34 @@
+{
+  "name": "expensepulse-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ExpensePulse AI - Smart Daily Budget & Expense Tracker, by ZeeU Creative Studio",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "prebuild": "expo prebuild",
+    "build:android:local": "eas build --profile production --platform android --local",
+    "build:android": "eas build --profile production --platform android"
+  },
+  "dependencies": {
+    "expo": "~51.0.28",
+    "expo-status-bar": "~1.12.1",
+    "expo-print": "~13.0.1",
+    "expo-sharing": "~12.0.1",
+    "expo-file-system": "~17.0.1",
+    "react": "18.2.0",
+    "react-native": "0.74.5",
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "react-native-svg": "15.2.0",
+    "react-native-chart-kit": "^6.12.0",
+    "react-native-google-mobile-ads": "^14.2.4",
+    "@expo/vector-icons": "^14.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@types/react": "~18.2.79",
+    "typescript": "~5.3.3"
+  }
+}
