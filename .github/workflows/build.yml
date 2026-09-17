@@ -1,0 +1,54 @@
+name: Build Android Release APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: ☕ Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: 📱 Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: 📦 Install Project Dependencies
+        run: npm install
+
+      - name: ⚙️ Setup EAS CLI
+        run: npm install -g eas-cli
+
+      - name: 🚀 Prebuild Native Android Project
+        run: npx expo prebuild --platform android --clean
+
+      - name: 🔑 Copy Keystore to Android App
+        run: |
+          if [ -f "zeeu-keystore.jks" ]; then
+            cp zeeu-keystore.jks android/app/
+          fi
+
+      - name: 🔨 Compile Release APK with Gradle
+        working-directory: android
+        run: ./gradlew assembleRelease --no-daemon
+
+      - name: 📤 Upload Production APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ExpensePulse-AI-Release-APK
+          path: android/app/build/outputs/apk/release/*.apk
