@@ -17,7 +17,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'npm'
 
       - name: ☕ Setup Java 17
         uses: actions/setup-java@v4
@@ -31,13 +30,10 @@ jobs:
       - name: 📦 Install Project Dependencies
         run: npm install
 
-      - name: ⚙️ Setup EAS CLI
-        run: npm install -g eas-cli
-
       - name: 🚀 Prebuild Native Android Project
-        run: npx expo prebuild --platform android --clean
+        run: npx --yes expo prebuild --platform android --clean
 
-      - name: 🔑 Copy Keystore to Android App
+      - name: 🔑 Setup Keystore
         run: |
           if [ -f "zeeu-keystore.jks" ]; then
             cp zeeu-keystore.jks android/app/
